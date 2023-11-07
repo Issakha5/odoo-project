@@ -1,0 +1,31 @@
+version: "3.7"
+
+services:
+ odoo:
+   build:
+     context: .
+     dockerfile: Dockerfile
+   env_file:
+     - myenvfile.env
+   ports:
+     - "8069:8069"
+     - "8071:8071"
+   volumes:
+     - data:/var/lib/odoo
+     - ./custom-addons:/custom-addons
+     - ./addons:/addons
+   depends_on:
+     - psql
+   restart: always
+ 
+ psql:
+   image: postgres:13
+   env_file: myenvfile.env
+   volumes:
+     - db:/var/lib/pgsql/data/pgdata
+   restart: always
+   
+volumes:
+ data:
+ db:
+ 
